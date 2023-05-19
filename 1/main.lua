@@ -12,7 +12,7 @@ local yi = 16
 local homx = 32
 local homy = 64
 local homz = 128
-Pos = {true, true, true}
+Pos = { true, true, true }
 --local cin = 1024
 --[[local function setBundledOutput(side, colour, on)
     if on then
@@ -32,7 +32,7 @@ local function Rwxc()
     rs.setBundledOutput(out, dir)
     repeat
         sleep(1)
-    until homx+homy+homz == rs.getBundledInput(inp)
+    until homx + homy + homz == rs.getBundledInput(inp)
     rs.setBundledOutput(out, colors.subtract(con))
 end
 local function Rwxp()
@@ -53,7 +53,7 @@ local function Rwyc()
     rs.setBundledOutput(out, colors.combine(dir, xi))
     repeat
         sleep(1)
-    until homx+homy+homz == rs.getBundledInput(inp) or homy+homz == rs.getBundledInput(inp)
+    until homx + homy + homz == rs.getBundledInput(inp) or homy + homz == rs.getBundledInput(inp)
     rs.setBundledOutput(out, colors.subtract(con))
 end
 local function Rwyp()
@@ -69,7 +69,7 @@ local function Fwz()
     sleep(1)
     repeat
         sleep(1)
-    until rs.getBundledInput(inp) == homz or rs.getBundledInput(inp) == homz+homy or rs.getBundledInput(inp) == homz+homy+homx
+    until rs.getBundledInput(inp) == homz or rs.getBundledInput(inp) == homz + homy or rs.getBundledInput(inp) == homz + homy + homx
     rs.setBundledOutput(out, colors.subtract(con))
 end
 local function Rwz()
@@ -77,7 +77,7 @@ local function Rwz()
     sleep(1)
     repeat
         sleep(1)
-    until homx+homy+homz == rs.getBundledInput(inp) or homy+homz == rs.getBundledInput(inp) or homz == rs.getBundledInput(inp)
+    until homx + homy + homz == rs.getBundledInput(inp) or homy + homz == rs.getBundledInput(inp) or homz == rs.getBundledInput(inp)
     rs.setBundledOutput(out, colors.subtract(con))
 end
 -- Fin movimientos eje Z --
@@ -86,22 +86,22 @@ end
 -- Fin movimientos de la cinta de transporte --
 -- Movimientos compuestos --
 local function Home(x, y, z)
-    if x==false and y==false and z==true  then
+    if x == false and y == false and z == true then
         Rwz()
-    elseif (x==false and y==true and z==false) then
+    elseif (x == false and y == true and z == false) then
         Rwyc()
-    elseif (x==true and y==false and z==false) then
+    elseif (x == true and y == false and z == false) then
         Rwxc()
-    elseif (x==false and y==true and z==true) then
+    elseif (x == false and y == true and z == true) then
         Rwz()
         Rwyc()
-    elseif (x==true and y==false and z==true) then
+    elseif (x == true and y == false and z == true) then
         Rwz()
         Rwxc()
-    elseif (x==true and y==true and z==false) then
+    elseif (x == true and y == true and z == false) then
         Rwyc()
         Rwxc()
-    elseif (x==true and y==true and z==true) then
+    elseif (x == true and y == true and z == true) then
         Rwz()
         Rwyc()
         Rwxc()
@@ -133,20 +133,20 @@ end
 -- Fin movimientos compuestos --
 -- Funciones internas --
 local function PosAll()
-    if rs.getBundledInput(inp)-128 == (homx+homy) then
+    if rs.getBundledInput(inp) - 128 == (homx + homy) then
         Pos[0] = false
         Pos[1] = false
         Pos[2] = true
     else
-        if rs.getBundledInput(inp)-128 == homx then -- solo eje Y
+        if rs.getBundledInput(inp) - 128 == homx then -- solo eje Y
             Pos[0] = false
             Pos[1] = true
             Pos[2] = true
-        elseif rs.getBundledInput(inp)-128 == homy then -- solo eje X
+        elseif rs.getBundledInput(inp) - 128 == homy then -- solo eje X
             Pos[0] = true
             Pos[1] = false
             Pos[2] = true
-        else                    -- todos los ejes
+        else -- todos los ejes
             Pos[0] = true
             Pos[1] = true
             Pos[2] = true
@@ -157,19 +157,22 @@ end
 -- Debug area --
 print(rs.getBundledInput(inp))
 PosAll()
-print(Pos[0],Pos[1],Pos[2])
+print(Pos[0], Pos[1], Pos[2])
 Home(Pos[0], Pos[1], Pos[2])
 xp = 9
+yp = 8
 repeat
-        print(xp, yp)
-        Mov1(xp,yp)
-        PosAll()
-        Home(Pos[0],Pos[1],Pos[2])
-        sleep(50)
-        if yp == 0 then
-            xp = xp - 1
-            yp = 10
-        else
-            yp = yp - 1
-        end
+    print(xp, yp)
+    Mov1(xp, yp)
+    PosAll()
+    Home(Pos[0], Pos[1], Pos[2])
+    repeat
+        sleep(1)
+    until rs.getBundledInput("top") > 0
+    if yp == 0 then
+        xp = xp - 1
+        yp = 10
+    else
+        yp = yp - 1
+    end
 until xp == 0
