@@ -422,7 +422,7 @@ local function iniciar()
     xp = math.random(1, 10)  -- Random X coordinate
     yp = math.random(1, 10)  -- Random Y coordinate
     PosAll()  -- Get the current position
-    Home(Pos[1], Pos[2], Pos[3])  -- Move to the home position
+    Home(Pos[0], Pos[1], Pos[2])  -- Move to the home position
     Mov1(xp, yp)  -- Call function to move to the random coordinates
     print("Movimientos de prueba realizados.")
     print("Presione Enter para continuar...")
@@ -560,6 +560,7 @@ if fs.exists(configFile) == false then
     print(fs.exists(configFile))  -- Check if the config file exists
     sleep(5)  -- Wait for a moment before proceeding
     iniciar()  -- Load the configuration if it exists
+    menu()
 else
     menu()  -- Call function to create a new config file if it doesn't exist
 end
